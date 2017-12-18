@@ -49,10 +49,8 @@ public class Sort {
     }
 
     private void createSortedSubfiles() {
-        try {
+        try (BufferedReader sourceReader = new BufferedReader(new FileReader(sourceFile))) {
             String subFilePrefix = "subfile-";
-
-            BufferedReader sourceReader = new BufferedReader(new FileReader(sourceFile));
 
             String nextLine = null;
             List<String> buffer = new ArrayList<>(subFileSize);
@@ -68,12 +66,15 @@ public class Sort {
                     currentSubNum++;
                     subFiles.add(subFileName);
 
-                    BufferedWriter subWriter = new BufferedWriter(new FileWriter(subFileName));
-                    for (String outputLine : buffer) {
-                        subWriter.write(outputLine);
-                        subWriter.newLine();
+                    ;
+                    try (BufferedWriter subWriter = new BufferedWriter(new FileWriter(subFileName))) {
+                        for (String outputLine : buffer) {
+                            subWriter.write(outputLine);
+                            subWriter.newLine();
+                        }
+                    } catch (IOException eInner) {
+                        eInner.printStackTrace();
                     }
-                    subWriter.close();
 
                     buffer = new ArrayList<>(subFileSize);
                     bufferCnt = 0;
@@ -86,8 +87,6 @@ public class Sort {
                     break;
                 }
             }
-
-            sourceReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

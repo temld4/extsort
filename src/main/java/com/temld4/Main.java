@@ -53,6 +53,7 @@ public class Main {
     }
 
     private static void printUsage() {
-        System.out.println("Coming soon");
+        System.out.println("generate [file name] [lines in file] [line length]");
+        System.out.println("sort [filename] [sub file size]");
     }
 }
